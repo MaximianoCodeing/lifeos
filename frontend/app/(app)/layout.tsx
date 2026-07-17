@@ -30,16 +30,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("keydown", handler);
   }, [router]);
 
-  useEffect(() => {
-    const token = localStorage.getItem("lifeos-access-token");
-    if (!token) {
-      router.replace("/login");
-    } else {
-      setChecked(true);
-    }
-  }, [router]);
-
-  if (!checked) return null;
+if (!checked) return null;
 
   return (
     <div className="flex h-screen overflow-hidden">
