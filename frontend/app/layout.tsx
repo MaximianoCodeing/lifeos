@@ -1,21 +1,30 @@
-import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/layout/theme-provider";
-import { ToastProvider } from "@/components/layout/toast-provider";
-import "./globals.css";
+"use client";
 
-export const metadata: Metadata = {
-  title: "LifeOS",
-  description: "A tua plataforma pessoal de organização, produtividade e aprendizagem.",
-};
+import { useEffect, useState } from "react";
+import { Sidebar } from "@/components/layout/sidebar";
+import { Topbar } from "@/components/layout/topbar";
+import { CommandPalette } from "@/components/layout/command-palette";
+import { QuickAdd } from "@/components/layout/quick-add";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  useEffect(() => {
+    const openHandler = () => setPaletteOpen(true);
+    window.addEventListener("lifeos:open-palette", openHandler);
+    return () => window.removeEventListener("lifeos:open-palette", openHandler);
+  }, []);
+
   return (
-    <html lang="pt" suppressHydrationWarning>
-      <body>
-        <ThemeProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar mobileOpen={mobileNavOpen} onCloseMobile={() => setMobileNavOpen(false)} />
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <Topbar onOpenCommandPalette={() => setPaletteOpen(true)} onOpenMobileNav={() => setMobileNavOpen(true)} />
+        <main className="flex-1 overflow-y-auto px-4 py-5 md:px-8 md:py-6">{children}</main>
+      </div>
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <QuickAdd />
+    </div>
   );
 }
