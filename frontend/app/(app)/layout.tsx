@@ -10,7 +10,7 @@ import { QuickAdd } from "@/components/layout/quick-add";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
