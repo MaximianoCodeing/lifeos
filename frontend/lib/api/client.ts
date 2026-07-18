@@ -115,6 +115,13 @@ export const libraryApi = {
 
 export const searchApi = { query: (q: string) => apiFetch(`/search?q=${encodeURIComponent(q)}`) };
 
+export const aiApi = {
+  ask: (question: string, context = "") =>
+    apiFetch<{ answer: string }>("/ai/ask", { method: "POST", body: j({ question, context }) }),
+  plan: (goal_description: string) =>
+    apiFetch<{ plan: string }>("/ai/plan", { method: "POST", body: j({ goal_description }) }),
+};
+
 export const statsApi = {
   overview: () => apiFetch("/stats/overview"),
   monthly: () => apiFetch("/stats/monthly"),
