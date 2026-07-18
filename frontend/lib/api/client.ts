@@ -68,6 +68,7 @@ export const calendarApi = {
   merged: () => apiFetch("/calendar/merged"),
   events: () => apiFetch("/calendar/events"),
   create: (data: any) => apiFetch("/calendar/events", { method: "POST", body: j(data) }),
+  remove: (id: string) => apiFetch(`/calendar/events/${id}`, { method: "DELETE" }),
 };
 
 export const pomodoroApi = {
@@ -112,28 +113,7 @@ export const libraryApi = {
   remove: (id: string) => apiFetch(`/library/${id}`, { method: "DELETE" }),
 };
 
-export const flashcardsApi = {
-  decks: () => apiFetch("/flashcards/decks"),
-  createDeck: (data: any) => apiFetch("/flashcards/decks", { method: "POST", body: j(data) }),
-  cards: (deckId: string) => apiFetch(`/flashcards/decks/${deckId}/cards`),
-  createCard: (data: any) => apiFetch("/flashcards/cards", { method: "POST", body: j(data) }),
-  due: () => apiFetch("/flashcards/due"),
-  updateCard: (id: string, data: { is_favorite?: boolean; front?: string; back?: string }) => {
-    const params = new URLSearchParams(data as any).toString();
-    return apiFetch(`/flashcards/cards/${id}?${params}`, { method: "PATCH" });
-  },
-  review: (id: string, quality: number) =>
-    apiFetch(`/flashcards/cards/${id}/review`, { method: "POST", body: j({ quality }) }),
-};
-
 export const searchApi = { query: (q: string) => apiFetch(`/search?q=${encodeURIComponent(q)}`) };
-
-export const aiApi = {
-  ask: (question: string, context = "") =>
-    apiFetch<{ answer: string }>("/ai/ask", { method: "POST", body: j({ question, context }) }),
-  plan: (goal_description: string) =>
-    apiFetch<{ plan: string }>("/ai/plan", { method: "POST", body: j({ goal_description }) }),
-};
 
 export const statsApi = {
   overview: () => apiFetch("/stats/overview"),
